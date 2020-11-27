@@ -1,32 +1,15 @@
-import express from 'express';
+import bot from './bot'
+import app from './server'
+import dotenv from 'dotenv'
 
-const app = express();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config()
+}
 
-// CORSの許可
-app.use((_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
+const PORT = process.env.PORT || 3000
 
-// body-parserに基づいた着信リクエストの解析
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+bot.login(process.env.DISCORD_BOT_TOKEN)
 
-// GetとPostのルーティング
-const router: express.Router = express.Router();
-router.get('/api/getTest', (req: express.Request, res: express.Response) => {
-  res.send(req.query);
-});
-router.post('/api/postTest', (req: express.Request, res: express.Response) => {
-  res.send(req.body);
-});
-app.use(router);
-
-// 3000番ポートでAPIサーバ起動
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
-});
+app.listen(PORT, () => {
+  console.log(`express listen port: ${PORT}`)
+})
