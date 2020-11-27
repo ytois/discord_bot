@@ -17,6 +17,8 @@ app.use((_req, res, next) => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use(express.static('public'))
+
 app.use(router)
 
 export default app
