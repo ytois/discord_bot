@@ -1,5 +1,6 @@
 import { Client, Message } from 'discord.js'
 import { DiscordBot } from 'discord_bot'
+import polyglot from '@/locales'
 
 class DiscordBot {
   client: Client
@@ -16,13 +17,22 @@ class DiscordBot {
     return this.client.login(this.bot_token)
   }
 
-  private onReady(): void {
-    this.client.on('ready', () => {
-      console.log('bot is ready.')
+  registerCommands(commands: DiscordBot.Command[]): void {
+    commands.forEach(({ rule, func }) => {
+      this.onMessage(rule, func)
     })
   }
 
-  onMessage(rule: string | RegExp, func: (message: Message) => any): void {
+  private onReady(): void {
+    this.client.on('ready', () => {
+      console.log(polyglot.t('Bot.ready'))
+    })
+  }
+
+  private onMessage(
+    rule: string | RegExp,
+    func: (message: Message) => any
+  ): void {
     this.client.on('message', (message) => {
       if (message.author.bot) {
         return
@@ -30,12 +40,6 @@ class DiscordBot {
       if (message.content.match(rule)) {
         return func(message)
       }
-    })
-  }
-
-  registerCommands(commands: DiscordBot.Command[]): void {
-    commands.forEach(({ rule, func }) => {
-      this.onMessage(rule, func)
     })
   }
 }

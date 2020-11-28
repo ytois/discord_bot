@@ -1,0 +1,7 @@
+{
+  "Bot": {
+    "ready": "DiscordBot is activated.",
+    "join_voice_channel": "joined at voice channnel",
+    "leave_voice_channel": "leaved from voice channnel"
+  }
+}

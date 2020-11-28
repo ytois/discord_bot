@@ -1,0 +1,7 @@
+{
+  "Bot": {
+    "ready": "DiscordBot is activated.",
+    "join_voice_channel": "ボイスチャンネルに入室したよ",
+    "leave_voice_channel": "ボイスチャンネルから退室したよ"
+  }
+}
