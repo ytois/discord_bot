@@ -26,7 +26,7 @@
     "start": "npm run build && npm run serve",
     "build": "npx tsc",
     "serve": "node dist/index.js",
-    "dev:bot": "npx ts-node src/bot.ts",
+    "dev": "npx ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

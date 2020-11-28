@@ -1,31 +1,47 @@
-import { Client } from 'discord.js'
+import { Client, Message } from 'discord.js'
 
-const client = new Client()
+export interface Command {
+  rule: string | RegExp
+  func: (message: Message) => any
+}
 
-const WORDS: string[] = ['猫', '犬', '象', '人', '梟']
-let ngWord = '猫'
+class DiscordBot {
+  client: Client
+  bot_token: string
 
-client.on('ready', () => {
-  console.log('bot is ready.')
-})
+  constructor(bot_token: string) {
+    this.client = new Client()
+    this.bot_token = bot_token
 
-client.on('message', (message) => {
-  if (message.author.id === client.user.id) {
-    return
+    this.onReady()
   }
 
-  if (message.content.match(/.ms[ 　]+list/)) {
-    const txt = WORDS.join(' / ')
-    message.reply(txt)
-  } else if (message.content.match(/.ms[ 　]+ng/)) {
-    message.reply(ngWord)
-  } else if (message.content.match(/.ms[ 　]+reset/)) {
-    ngWord = WORDS[Math.floor(Math.random() * WORDS.length)]
-  } else {
-    if (message.content.match(new RegExp(ngWord))) {
-      message.channel.send(`@${message.author.username} は味噌汁をこぼしました`)
-    }
+  login(): Promise<string> {
+    return this.client.login(this.bot_token)
   }
-})
 
-export default client
+  private onReady(): void {
+    this.client.on('ready', () => {
+      console.log('bot is ready.')
+    })
+  }
+
+  onMessage(rule: string | RegExp, func: (message: Message) => any): void {
+    this.client.on('message', (message) => {
+      if (message.author.bot) {
+        return
+      }
+      if (message.content.match(rule)) {
+        return func(message)
+      }
+    })
+  }
+
+  registerCommands(commands: Command[]): void {
+    commands.forEach(({ rule, func }) => {
+      this.onMessage(rule, func)
+    })
+  }
+}
+
+export default DiscordBot
