@@ -22,4 +22,12 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './']],
+        extensions: ['.ts', '.js', '.json'],
+      },
+    },
+  },
 }
