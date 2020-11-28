@@ -8,6 +8,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
