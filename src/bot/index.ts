@@ -1,9 +1,5 @@
 import { Client, Message } from 'discord.js'
-
-export interface Command {
-  rule: string | RegExp
-  func: (message: Message) => any
-}
+import { DiscordBot } from 'discord_bot'
 
 class DiscordBot {
   client: Client
@@ -37,7 +33,7 @@ class DiscordBot {
     })
   }
 
-  registerCommands(commands: Command[]): void {
+  registerCommands(commands: DiscordBot.Command[]): void {
     commands.forEach(({ rule, func }) => {
       this.onMessage(rule, func)
     })

@@ -1,10 +1,10 @@
-import { Command } from '../index'
+import { DiscordBot } from 'discord_bot'
 import hello from './hello'
 import seeYou from './see_you'
 import inviteVoiceChannel from './invite_voice_channel'
 import leaveVoiceChannel from './leave_voice_channel'
 
-const commands: Command[] = [
+const commands: DiscordBot.Command[] = [
   {
     rule: /^こん(にちは)?$/,
     func: hello,
