@@ -2,10 +2,14 @@ import DiscordBot from './bot'
 import commands from './bot/commands'
 import app from './server'
 import dotenv from 'dotenv'
+import { createConnection } from './db'
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config()
 }
+
+// connect db
+createConnection()
 
 // bot
 const bot = new DiscordBot(process.env.DISCORD_BOT_TOKEN)
