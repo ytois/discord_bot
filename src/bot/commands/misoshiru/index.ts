@@ -1,10 +1,13 @@
 import { Message } from 'discord.js'
+import { createQueryBuilder } from 'typeorm'
+import dayjs from 'dayjs'
+
 import entities from '@/db/entities'
 import polyglot from '@/locales'
-import dayjs from 'dayjs'
 import logger from '@/logger'
-import LotteryMachine from './lottery_machine'
 import NgWord from '@/db/entities/NgWord'
+
+import LotteryMachine from './lottery_machine'
 
 const INTERVAL_MIN = 3
 
@@ -24,6 +27,11 @@ export default async function misoshiru(message: Message): Promise<void> {
 
 // チャットのメッセージをDBへ保存する
 function saveOnMessage(message: Message): void {
+  // Botコマンドの場合は除外
+  if (message.content.match(/^\.ms/)) {
+    return
+  }
+
   const entity = new entities.TextMessage()
   entity.message = message.content
   entity.save().then((e) => {
@@ -36,6 +44,14 @@ function saveNgWord(word: string): Promise<NgWord> {
   if (!word) {
     return
   }
+
+  // すべてのNGワードを無効化
+  createQueryBuilder()
+    .update(NgWord)
+    .set({ enable: false })
+    .where('ng_word.enable = :bool', { bool: true })
+    .execute()
+
   const entity = new NgWord()
   entity.word = word
   return entity.save().then((e) => {
