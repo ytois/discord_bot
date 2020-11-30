@@ -1,6 +1,7 @@
 import { Client, Message } from 'discord.js'
 import { DiscordBot } from 'discord_bot'
 import polyglot from '@/locales'
+import logger from '@/logger'
 
 class DiscordBot {
   client: Client
@@ -25,7 +26,7 @@ class DiscordBot {
 
   private onReady(): void {
     this.client.on('ready', () => {
-      console.log(polyglot.t('Bot.ready'))
+      logger.info(polyglot.t('Bot.ready'))
     })
   }
 

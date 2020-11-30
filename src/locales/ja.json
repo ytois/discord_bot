@@ -2,6 +2,11 @@
   "Bot": {
     "ready": "DiscordBot is activated.",
     "join_voice_channel": "ボイスチャンネルに入室したよ",
-    "leave_voice_channel": "ボイスチャンネルから退室したよ"
+    "leave_voice_channel": "ボイスチャンネルから退室したよ",
+    "remark_ng_word": "味噌汁をこぼしました",
+    "lottery_ng_word": "NGワードを作成しました",
+    "not_found_argument": "引数が見つからないよ",
+    "tell_ng_word": "NGワードは \"%{word}\" だよ",
+    "not_found_ng_word": "NGワードはありません"
   }
 }

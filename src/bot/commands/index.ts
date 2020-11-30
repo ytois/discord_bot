@@ -1,25 +1,20 @@
 import { DiscordBot } from 'discord_bot'
-import hello from './hello'
-import seeYou from './see_you'
-import inviteVoiceChannel from './invite_voice_channel'
-import leaveVoiceChannel from './leave_voice_channel'
+import misoshiru, { lotteryNgWord, getNgWord } from './misoshiru'
 
 const commands: DiscordBot.Command[] = [
   {
-    rule: /^こん(にちは)?$/,
-    func: hello,
+    rule: /.*/,
+    func: misoshiru,
   },
   {
-    rule: /^さよう?なら$/,
-    func: seeYou,
+    // NGワードを教えてもらう
+    rule: /^\.ms +tell-ng$/,
+    func: getNgWord,
   },
   {
-    rule: /^.ms join$/,
-    func: inviteVoiceChannel,
-  },
-  {
-    rule: /^.ms leave$/,
-    func: leaveVoiceChannel,
+    // NGワードを作成する
+    rule: /^\.ms +create-ng$/,
+    func: lotteryNgWord,
   },
 ]
 
