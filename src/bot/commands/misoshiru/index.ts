@@ -44,8 +44,8 @@ function saveNgWord(word: string): Promise<NgWord> {
   })
 }
 
-// チャットのメッセージがNGワードか判定する
-async function validMessage(message: Message): Promise<boolean> {
+// NGワードを取得
+export async function getNgWord(message?: Message): Promise<NgWord> {
   const ngWord = (
     await entities.NgWord.find({
       where: {
@@ -57,6 +57,18 @@ async function validMessage(message: Message): Promise<boolean> {
       take: 1,
     })
   )[0]
+
+  if (message) {
+    const messageType = ngWord ? 'Bot.tell_ng_word' : 'Bot.not_found_ng_word'
+    message.reply(polyglot.t(messageType, { word: ngWord.word }))
+  }
+
+  return ngWord
+}
+
+// チャットのメッセージがNGワードか判定する
+async function validMessage(message: Message): Promise<boolean> {
+  const ngWord = await getNgWord()
 
   // NGワードが未登録の場合はスキップし、NGワードを作成
   if (!ngWord) {
