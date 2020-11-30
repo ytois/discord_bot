@@ -36,7 +36,12 @@ export default class LotteryMachine {
   }
 
   public async lottery(callback: (word: string) => void): Promise<void> {
+    const THRESHOLD = 50
     const messages = await this.getMessages()
+
+    if (messages.length < THRESHOLD) {
+      throw new Error('まだメッセージが貯まっていません')
+    }
 
     this.builder.build((_err, tokenizer) => {
       const tokenizedWord = _(messages)

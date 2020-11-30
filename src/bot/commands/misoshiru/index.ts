@@ -12,6 +12,11 @@ import LotteryMachine from './lottery_machine'
 const INTERVAL_MIN = 3
 
 export default async function misoshiru(message: Message): Promise<void> {
+  // Botコマンドの場合はスキップ
+  if (message.content.match(/^\.ms/)) {
+    return
+  }
+
   saveOnMessage(message)
 
   const result = await validMessage(message)
@@ -27,11 +32,6 @@ export default async function misoshiru(message: Message): Promise<void> {
 
 // チャットのメッセージをDBへ保存する
 function saveOnMessage(message: Message): void {
-  // Botコマンドの場合は除外
-  if (message.content.match(/^\.ms/)) {
-    return
-  }
-
   const entity = new entities.TextMessage()
   entity.message = message.content
   entity.save().then((e) => {
@@ -119,5 +119,9 @@ export function lotteryNgWord(message?: Message): void {
       }
     })
   }
-  new LotteryMachine().lottery(callbackFunc)
+  new LotteryMachine().lottery(callbackFunc).catch((error) => {
+    if (message) {
+      message.reply(error.message)
+    }
+  })
 }
