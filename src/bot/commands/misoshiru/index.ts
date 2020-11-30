@@ -3,8 +3,10 @@ import entities from '@/db/entities'
 import polyglot from '@/locales'
 import dayjs from 'dayjs'
 import logger from '@/logger'
+import LotteryMachine from './lottery_machine'
+import NgWord from '@/db/entities/NgWord'
 
-const INTERVAL_MIN = 5
+const INTERVAL_MIN = 3
 
 export default async function misoshiru(message: Message): Promise<void> {
   saveOnMessage(message)
@@ -14,9 +16,9 @@ export default async function misoshiru(message: Message): Promise<void> {
     return
   }
   // reply message
-  message.reply(polyglot.t('Bot.ng_word'))
+  message.reply(polyglot.t('Bot.remark_ng_word'))
 
-  // lottery ng word
+  // 再度NGワードを登録する
   lotteryNgWord()
 }
 
@@ -29,11 +31,32 @@ function saveOnMessage(message: Message): void {
   })
 }
 
+// NGワードを登録する
+function saveNgWord(word: string): Promise<NgWord> {
+  if (!word) {
+    return
+  }
+  const entity = new NgWord()
+  entity.word = word
+  return entity.save().then((e) => {
+    logger.info(`Create NG word: ${e.word}`)
+    return e
+  })
+}
+
 // チャットのメッセージがNGワードか判定する
 async function validMessage(message: Message): Promise<boolean> {
-  const ngWord = await entities.NgWord.findOne({
-    enable: true,
-  })
+  const ngWord = (
+    await entities.NgWord.find({
+      where: {
+        enable: true,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      take: 1,
+    })
+  )[0]
 
   // NGワードが未登録の場合はスキップし、NGワードを作成
   if (!ngWord) {
@@ -42,7 +65,8 @@ async function validMessage(message: Message): Promise<boolean> {
   }
 
   // インターバルよりも短ければスキップ
-  if (dayjs().subtract(INTERVAL_MIN, 'minute').isAfter(ngWord.createdAt)) {
+  const createdAt = dayjs(ngWord.createdAt)
+  if (dayjs().diff(createdAt, 'minute') < INTERVAL_MIN) {
     return false
   }
 
@@ -57,16 +81,15 @@ async function validMessage(message: Message): Promise<boolean> {
   return false
 }
 
+// NGワードを抽選して登録する
 export function lotteryNgWord(message?: Message): void {
-  // TODO: NGワードを抽選して登録する
-  // new LotteryMachine().lottery().then((word) => {
-  //   const entity = new entities.NgWord()
-  //   entity.word = word
-  //   entity.save()
-  // })
-
-  // 引数が与えられている場合はメッセージを返す
-  if (message) {
-    message.reply(polyglot.t('Bot.lottery_ng_word'))
+  const callbackFunc = (word: string) => {
+    saveNgWord(word).then(() => {
+      // 引数が与えられている場合はメッセージを返す
+      if (message) {
+        message.reply(polyglot.t('Bot.lottery_ng_word'))
+      }
+    })
   }
+  new LotteryMachine().lottery(callbackFunc)
 }
