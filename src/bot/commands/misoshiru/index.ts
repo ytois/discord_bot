@@ -76,7 +76,7 @@ export async function getNgWord(message?: Message): Promise<NgWord> {
 
   if (message) {
     const messageType = ngWord ? 'Bot.tell_ng_word' : 'Bot.not_found_ng_word'
-    message.reply(polyglot.t(messageType, { word: ngWord.word }))
+    message.reply(polyglot.t(messageType, { word: ngWord && ngWord.word }))
   }
 
   return ngWord
