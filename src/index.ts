@@ -16,8 +16,8 @@ createConnection().then(() => {
 
 // bot
 const bot = new DiscordBot(process.env.DISCORD_BOT_TOKEN)
-bot.login()
 bot.registerCommands(commands)
+bot.login()
 
 // express
 const PORT = process.env.PORT || 3000
