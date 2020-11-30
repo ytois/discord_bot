@@ -125,3 +125,25 @@ export function lotteryNgWord(message?: Message): void {
     }
   })
 }
+
+// 直近100件のログをインポートする
+export function importLog(message: Message): void {
+  const LIMIT = 100
+
+  message.channel.messages
+    .fetch({ limit: LIMIT })
+    .then((messages) => {
+      messages.forEach((msg) => {
+        if (msg.author.bot || msg.content.match(/^\.ms/)) {
+          return
+        }
+
+        const entity = new entities.TextMessage()
+        entity.message = msg.content
+        entity.save()
+      })
+    })
+    .then(() => {
+      message.reply(polyglot.t('Bot.import_chat_log'))
+    })
+}

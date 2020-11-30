@@ -7,6 +7,7 @@
     "lottery_ng_word": "NGワードを作成しました",
     "not_found_argument": "引数が見つからないよ",
     "tell_ng_word": "NGワードは \"%{word}\" だよ",
-    "not_found_ng_word": "NGワードはありません"
+    "not_found_ng_word": "NGワードはありません",
+    "import_chat_log": "チャットのログをインポートしました"
   }
 }

@@ -1,5 +1,5 @@
 import { DiscordBot } from 'discord_bot'
-import misoshiru, { lotteryNgWord, getNgWord } from './misoshiru'
+import misoshiru, { lotteryNgWord, getNgWord, importLog } from './misoshiru'
 
 const commands: DiscordBot.Command[] = [
   {
@@ -15,6 +15,11 @@ const commands: DiscordBot.Command[] = [
     // NGワードを作成する
     rule: /^\.ms +create-ng$/,
     func: lotteryNgWord,
+  },
+  {
+    // チャットのログをインポートする
+    rule: /^\.ms +import-log$/,
+    func: importLog,
   },
 ]
 

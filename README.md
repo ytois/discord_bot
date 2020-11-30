@@ -20,17 +20,26 @@ https://discord-zoo-bot.glitch.me
 
 ### Command
 
-| command         | description                        |
-| --------------- | ---------------------------------- |
-| `.ms create-ng` | NG ワードの再登録を行います        |
-| `.ms tell-ng`   | 現在の NG ワードを教えてもらいます |
+| command          | description                                                     |
+| ---------------- | --------------------------------------------------------------- |
+| `.ms create-ng`  | NG ワードの再登録を行います                                     |
+| `.ms tell-ng`    | 現在の NG ワードを教えてもらいます                              |
+| `.ms import-log` | 投稿されたチャンネルの直近 100 件分のメッセージをインポートする |
 
 ## ENV
 
-| name              | value                    |
-| ----------------- | ------------------------ |
-| NODE_ENV          | production / development |
-| DISCORD_BOT_TOKEN | Discord bot token        |
-| PORT              | express listen port[^1]  |
+| name                | value                    |
+| ------------------- | ------------------------ |
+| NODE_ENV            | production / development |
+| DISCORD_BOT_TOKEN   | Discord bot token        |
+| PORT                | express listen port[^1]  |
+| TYPEORM_CONNECTION  | typeorm option[^2]       |
+| TYPEORM_DATABASE    | typeorm option[^2]       |
+| TYPEORM_SYNCHRONIZE | typeorm option[^2]       |
+| TYPEORM_LOGGING     | typeorm option[^2]       |
+| TYPEORM_ENTITIES    | typeorm option[^2]       |
+| TYPEORM_MIGRATIONS  | typeorm option[^2]       |
+| TYPEORM_SUBSCRIBERS | typeorm option[^2]       |
 
 [^1]: Glitch で使う場合は設定不要。設定した場合 3000 以外はエラーになる。
+[^2]: Glitch 本番環境では ormconfig.json が読み込めないので環境変数で設定する
